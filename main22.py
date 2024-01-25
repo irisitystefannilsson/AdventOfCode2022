@@ -27,8 +27,8 @@ def advent1_1():
 
     arr.sort()
     l = len(arr)
-    print('top cal: ', arr[l - 1])
-    print('top3 cals: ', arr[l - 1] + arr[l - 2] + arr[l - 3])
+    print('top cal (1): ', arr[l - 1])
+    print('top3 cals (2): ', arr[l - 1] + arr[l - 2] + arr[l - 3])
 
 
 def advent2_1():
@@ -55,7 +55,7 @@ def advent2_1():
         elif game[0] == 'C' and game[1] == 'X':
             score += 6 + 1
 
-    print('Score: ', score)
+    print('Score (1): ', score)
 
 
 def advent2_2():
@@ -82,7 +82,7 @@ def advent2_2():
         elif game[0] == 'C' and game[1] == 'X':  # choose B
             score += 0 + 2
 
-    print('Score: ', score)
+    print('Score (2): ', score)
 
 
 def item_prio(item):
@@ -116,7 +116,7 @@ def advent3_1():
         psum += priority(line.strip('\n'))
         line_no += 1
 
-    print('Sum of prioritys: ', psum)
+    print('Sum of priorities (1): ', psum)
 
 
 def badge_value(triple):
@@ -147,7 +147,7 @@ def advent3_2():
             triple = []
         line_no += 1
 
-    print('Sum of badges: ', psum)
+    print('Sum of badges (2): ', psum)
 
 
 def advent4_1():
@@ -164,7 +164,7 @@ def advent4_1():
         elif (int(b_2[0]) >= int(b_1[0])) and (int(b_2[1]) <= int(b_1[1])):
             no_complete_overlaps += 1
 
-    print('Nof complete overlaps: ', no_complete_overlaps)
+    print('Nof complete overlaps (1): ', no_complete_overlaps)
 
 
 def advent4_2():
@@ -239,8 +239,9 @@ def advent5_1(inorder=False):
                 t_store.pop()
         nof_c += 1
 
+    print('------')
     for h in heaps:
-        print(h.pop())
+        print('Top crates:', h.pop())
 
 
 def four_different(four_letters):
@@ -296,28 +297,25 @@ class FolderNode:
         self.parent = None
         self.depth = 0
 
-    def print_large(self):
+    def print_large(self, dirlist):
         if self.size() > 7870454:
-            print(self.size())
+            #print(self.size())
+            dirlist.append(self.size())
         for f in self.folders:
-            #print(2*self.depth*' ', '-', f.name, '(dir)')
-            f.print_large()
-        #for f in self.files:
-            #print(2*self.depth*' ', '-', f.name, '(file, size=', f.size, ')')
+            f.print_large(dirlist)
+        return dirlist
+    
 
     def print_small(self):
+        sum = 0
         if self.size() <= 100000:
-            print(self.size())
+            #print(self.size())
+            sum += self.size()
         for f in self.folders:
-            f.print_small()
+            sum += f.print_small()
+        return sum
 
-    def print(self):
-        for f in self.folders:
-            print(2*self.depth*' ', '-', f.name, '(dir)')
-            f.print()
-        for f in self.files:
-            print(2*self.depth*' ', '-', f.name, '(file, size=', f.size, ')')
-
+    
     def size(self):
         sum = 0
         for f in self.files:
@@ -351,9 +349,9 @@ def advent7_1(print_small=True):
             curr_folder.files.append(FileNode(name, file_size))
 
     if print_small:
-        root_folder.print_small()
+        print('(1):', root_folder.print_small())
     else:
-        root_folder.print_large()
+        print('(2):', min(root_folder.print_large([])))
 
 
 def calc_scenic_score(i, j, dim, A):
@@ -408,7 +406,7 @@ def advent8_1(dim=5):
             if (forest[i, j] > forest[:i, j]).all() or (forest[i, j] > forest[i+1:, j]).all() or (forest[i, j] > forest[i, :j]).all() or (forest[i, j] > forest[i, j+1:]).all():
                 nof_visible += 1
 
-    print('No of visible trees:', nof_visible)
+    print('No of visible trees (1):', nof_visible)
 
     max_scenic_score = 0
     for i in range(1, dim - 1):
@@ -416,7 +414,7 @@ def advent8_1(dim=5):
             scenic_score = calc_scenic_score(i, j, dim, forest)
             max_scenic_score = max(scenic_score, max_scenic_score)
 
-    print('Scenic score: ', max_scenic_score)
+    print('Scenic score (2): ', max_scenic_score)
 
 
 def advent9_1():
@@ -450,9 +448,9 @@ def advent9_1():
                 t_pos[0] -= (t_pos[0] - h_pos[0]) / abs(t_pos[0] - h_pos[0])
             t_positions.add((t_pos[0], t_pos[1]))
 
-    print('Head pos: ', h_pos)
-    print('Tail pos: ', t_pos)
-    print('Visited: ', len(t_positions))
+    #print('Head pos: ', h_pos)
+    #print('Tail pos: ', t_pos)
+    print('Visited (1): ', len(t_positions))
 
 
 def advent9_2():
@@ -489,7 +487,7 @@ def advent9_2():
                     rope[i][0] -= (rope[i][0] - rope[i-1][0]) / abs(rope[i][0] - rope[i-1][0])
                 t_positions.add((rope[9][0], rope[9][1]))
 
-    print('Visited: ', len(t_positions))
+    print('Visited (2): ', len(t_positions))
 
 
 def advent10_1():
@@ -510,7 +508,7 @@ def advent10_1():
             cycle += 1
             if cycle in cycle_chkpts:
                 sign_str = cycle*x
-                print('Cycle(noop): ', cycle, ', x =', x, ', Str: ', sign_str)
+                #print('Cycle(noop): ', cycle, ', x =', x, ', Str: ', sign_str)
                 sum_sign_strs += sign_str
         else:  # addx v
             cmd = 'addx'
@@ -519,11 +517,11 @@ def advent10_1():
             x += v
             if cycle in cycle_chkpts:
                 sign_str = cycle*(x - v)
-                print('Cycle(addx): ', cycle, ', x =', x - v, ', Str: ', sign_str)
+                #print('Cycle(addx): ', cycle, ', x =', x - v, ', Str: ', sign_str)
                 sum_sign_strs += sign_str
             elif (cycle - 1) in cycle_chkpts:
                 sign_str = (cycle - 1)*(x - v)
-                print('Cycle(addx): ', cycle, ', x =', x - v, ', Str: ', sign_str)
+                #print('Cycle(addx): ', cycle, ', x =', x - v, ', Str: ', sign_str)
                 sum_sign_strs += sign_str
         row = (cycle - 1) // 40
         col = (cycle - 1) % 40
@@ -534,16 +532,18 @@ def advent10_1():
                 screen[row, col] = '#'
         else:
             crt_col = x - v
-            print(crt_col, col)
+            #print(crt_col, col)
             if col in [crt_col - 1, crt_col, crt_col + 1]:
                 screen[row, col] = '#'
             row = (cycle - 2) // 40
             col = (cycle - 2) % 40
-            print(crt_col, col)
+            #print(crt_col, col)
             if col in [crt_col - 1, crt_col, crt_col + 1]:
                 screen[row, col] = '#'
 
-    print('Sum of signal strs: ', sum_sign_strs)
+    print('Sum of signal strs (1): ', sum_sign_strs)
+    np.set_printoptions(edgeitems=30, linewidth=100000, formatter=dict(float=lambda x: "%.3g" % x))
+    print('(2)')
     print(screen)
 
 
@@ -685,6 +685,7 @@ class Monkey2(Monkey):
 def advent11_1(divideby, no_rounds):
     file = open('input11.txt')
 
+    print('(', no_rounds, ')')
     monkeys = []
     lcm = 1
     while True:
@@ -712,7 +713,6 @@ def advent11_1(divideby, no_rounds):
 
     prev_time = 0
     for rounds in range(0, no_rounds):
-        #print('Round: ', rounds)
         for monkey in monkeys:
             for item in monkey.items:
                 item, res = monkey.handle_item(item, divideby)
@@ -722,14 +722,15 @@ def advent11_1(divideby, no_rounds):
                     monkeys[monkey.false_monkey].items.append(item)
             monkey.items = []
 
-        #print(monkeys[0].handle_times, ',', end='')
-        #print(len(str(monkeys[1].items[0])))
-        #prev_time = monkeys[0].handle_times
-
+    mnk_ht = list()
     for monkey in monkeys:
-        print('==================')
-        print(monkey.handle_times)
+        mnk_ht.append(monkey.handle_times)
 
+    max1 = max(mnk_ht)
+    mnk_ht.remove(max1)
+    max2 = max(mnk_ht)
+    print('Monkey business:', max1*max2)
+        
 
 class Node:
     def __init__(self, r=0, c=0, area=np.full((1, 1), 'a', dtype=str)):
@@ -802,14 +803,14 @@ def advent12_1():
             g_area[r, c] = Node(r, c, area)
 
     dist = NotReallyDijkstra(g_area, start)
-    print('Shortest dist from starting a: ', dist[end])
+    print('Shortest dist from starting a (1): ', int(dist[end]))
 
     min_a_dist = dist[end]
     for start_r in range(0, g_area.shape[0]):  # cheat by looking at input data, all b's in single column (1)
         start = (start_r, 0)
         dist = NotReallyDijkstra(g_area, start)
         min_a_dist = min(min_a_dist, dist[end])
-    print('Shortest distance from all possible a: ', min_a_dist)
+    print('Shortest distance from all possible a (2): ', int(min_a_dist))
 
 
 def compare_values(v_1, v_2):
@@ -871,16 +872,19 @@ def advent13_1():
         all.append(p_1)
         all.append(p_2)
 
-    print('Sum of correct pair indices: ', sum_indices)
+    print('Sum of correct pair indices (1): ', sum_indices)
 
     all.append([[2]])
     all.append([[6]])
     s_all = sorted(all, key=functools.cmp_to_key(p_less_than))
+    prod = 1
     for s in range(0, len(s_all)):
         if s_all[s] == [[2]] or s_all[s] == [[6]]:
-            print(s_all[s], 'index= ', s + 1)
-
-
+            #print('(2):', s_all[s], 'index= ', s + 1)
+            prod *= s + 1
+    print('Decoder key (2):', prod)
+    
+            
 def sand_fall(cave):
     cave_size = cave.shape
     pos = (0, 0)
@@ -957,7 +961,7 @@ def advent14_1():
             break
 
     sum_arr = cave == 'o'
-    print('Sum of sand: ', sum(sum(sum_arr)))
+    print('Sum of sand (1): ', sum(sum(sum_arr)))
     cave[sand_start] = '+'
     #ofile = open('cave.txt', 'w')
     #for r in range(0, cave.shape[0]):
@@ -1035,7 +1039,7 @@ def advent15_1():
             for p in range(left, right + 1):
                 coverage.add(p)
 
-    print('Coverage: ', len(coverage) - len(beacons_on_line))
+    print('Coverage (1): ', len(coverage) - len(beacons_on_line))
 
     max_coord = (4000000, 4000000)
     for y in range(0, max_coord[1] + 1):
@@ -1060,7 +1064,7 @@ def advent15_1():
         if len(intervals) > 1:
             # ==> not covering the whole line [0 ... 4000000] (should have checked min|max
             # values as well, but this worked here)
-            print('Tuning frequency found: ', 4000000*(intervals[0][1] + 1) + y)
+            print('Tuning frequency found (2): ', 4000000*(intervals[0][1] + 1) + y)
             break
 
 
@@ -1186,11 +1190,11 @@ def advent16_1(phase='I'):
 
     if phase == 'I':
         actions = []
-        print('Max released pressure: ', explore_valve(valves, valves_with_flow, actions, distances, 30, 0, 'AA'))
+        print('Max released pressure (1): ', explore_valve(valves, valves_with_flow, actions, distances, 30, 0, 'AA'))
 
     elif phase == 'II':
         actions = []
-        print('Max released pressure: ', explore_valve(valves, valves_with_flow, actions, distances, 26, 0, 'AA', True))
+        print('Max released pressure (2): ', explore_valve(valves, valves_with_flow, actions, distances, 26, 0, 'AA', True))
 
     elif phase == 'oldI':
         max_press = 0
@@ -1299,7 +1303,7 @@ def advent17_1():
         rock = rocks[r % 5]
         place_rock(rock, height, cave)
         if r % 5 == 0:
-            print(height - prev_height, ', ', end='')
+            #print(height - prev_height, ', ', end='')
             prev_height = height
         #print(cave[3*2017:3*2022, :])
         while True:
@@ -1315,19 +1319,22 @@ def advent17_1():
 
     print(wind_counter)
     h = find_highest_rock(cave)
-    print('Height of rocks:', h)
+    print('Height of rocks (1):', h)
     print(cave[3*2022 - h:3*2022 - h + 10, :])
 
     # The solution for part II (nof_rocks = 1000000000000)
     # is (1000000000000 - 19*5) // (349*5) * 2738 + 141 + 1426
     # 349 is the number of 5 rock intervals before it starts to repeat (found by experiment)
     # 2738 is the height of the accumulated rocks during the 349 intervals
-    # it tool 19 intervals before the first interval start
+    # it took 19 intervals before the first interval start
     # during those 19 intervals the height rose to 141
     # (1000000000000 - 19*5) % (349*5) is 915, or 183 5 rock intervals
     # during those another 1426 was added to the height
 
+    h2 = (1000000000000 - 19*5) // (349*5) * 2738 + 141 + 1426
+    print('Height of rocks (2):', h2)
 
+    
 def m_index_ident(a, b):
     if a[0] == b[0] and a[1] == b[1] and a[2] == b[2]:
         return 0
@@ -1406,8 +1413,8 @@ def advent18_1():
                 nof_pairs += 1
                 free_normals.remove(n)
                 free_normals.remove(cube_normals[j])
-    print('Tot. nof normals: ', nof_normals)
-    print('Exposed normals: ', nof_normals - 2*nof_pairs)
+    #print('Tot. nof normals: ', nof_normals)
+    print('Exposed normals (1): ', nof_normals - 2*nof_pairs)
 
     max_i = 0
     max_j = 0
@@ -1429,7 +1436,7 @@ def advent18_1():
             for x in range(0, volume.shape[0]):
                 if volume[x, y, z] == 1 and domains[x, y, z] == 0:
                     explore_domain(volume, domains, domain_no, [x, y, z])
-                    print(domain_no)
+                    #print(domain_no)
                     domain_no += 1
 
     total = 0
@@ -1455,7 +1462,7 @@ def advent18_1():
                             area += 1
         #print('Area of ', no, ': ', area)
         total += area
-    print('Total area : ', len(free_normals) - total)
+    print('Total area (2): ', len(free_normals) - total)
 
 
 def simulate_remaining_time(rem_time, decisions, amounts, nof_robots, blueprint, mtrl_types, ftime, forbidden=set()):
@@ -1636,8 +1643,8 @@ def advent20_1(multiplier=1, repeat=1):
         nodes[i].left = nodes[i-1]
         nodes[i].right = nodes[(i+1) % cycle]
 
-    print_circle(nodes)
-    print('----------------------')
+    #print_circle(nodes)
+    #print('----------------------')
 
     for r in range(0, repeat):
         for mover in nodes:
@@ -1656,9 +1663,12 @@ def advent20_1(multiplier=1, repeat=1):
     for iter in [1, 2, 3]:
         for cnt in range(0, 1000):
             n = n.right
-        print(n.value)
+        #print(n.value)
         nums.append(n.value)
-    print('Sum: ', sum(nums))
+    if multiplier == 1:
+        print('Sum (1): ', sum(nums))
+    else:
+        print('Sum (2): ', sum(nums))        
 
 
 class YellingMonkey:
@@ -2000,7 +2010,7 @@ def advent22_1(phase='I'):
 
         facing = {'>': 0, 'v': 1, '<': 2, '^': 3}
         password = (coord[0] + 1)*1000 + (coord[1] + 1)*4 + facing[board[coord]]
-        print('Password: ', password)
+        print('Password (1): ', password)
     elif phase == 'II':
         face_corners = {1: (0, 50), 2: (0, 100), 3: (50, 50), 4: (100, 0), 5: (100, 50), 6: (150, 0)}
         while index < len(path):
@@ -2012,7 +2022,7 @@ def advent22_1(phase='I'):
             #print(board)
         facing = {'>': 0, 'v': 1, '<': 2, '^': 3}
         password = (coord[0] + 1) * 1000 + (coord[1] + 1) * 4 + facing[board[coord]]
-        print('Password: ', password)
+        print('Password (2): ', password)
 
 
 class Elf:
@@ -2112,7 +2122,7 @@ def advent23_1(phase='I'):
             #print(area)
         rmin, cmin, rmax, cmax = find_bbox(elves)
         #print(area)
-        print('Free area: ', sum(sum(area[rmin:rmax+1, cmin:cmax+1] == '.')))
+        print('Free area (1): ', sum(sum(area[rmin:rmax+1, cmin:cmax+1] == '.')))
     elif phase == 'II':
         ctr = 0
         while True:
@@ -2129,8 +2139,8 @@ def advent23_1(phase='I'):
                 break
             if ctr % 20 == 0:
                 rmin, cmin, rmax, cmax = find_bbox(elves)
-                print('Bbox after round ', ctr + 1, ' : ', rmin, cmin, rmax, cmax)
-        print('First no-move round: ', ctr + 1)
+                #print('Bbox after round ', ctr + 1, ' : ', rmin, cmin, rmax, cmax)
+        print('First no-move round (2): ', ctr + 1)
 
 
 class Blizzard:
@@ -2337,7 +2347,7 @@ def find_shortest_path_through_valley(start, end, valley, blizzards):
     return dist, blizzards
 
 
-def advent24_I(phase='I'):
+def advent24_1(phase='I'):
     file = open('input24.txt')
 
     valley_data = []
@@ -2425,7 +2435,7 @@ def decimal_to_snafu(decimal):
     return ret_str
 
 
-def advent25_I():
+def advent25_1():
     file = open('input25.txt')
 
     snafu_numbers = []
@@ -2434,10 +2444,10 @@ def advent25_I():
     for line in file:
         snafu_numbers.append(line.strip('\n'))
         nof_rows += 1
-        print(snafu_numbers[-1], snafu_to_decimal(snafu_numbers[-1]))
+        #print(snafu_numbers[-1], snafu_to_decimal(snafu_numbers[-1]))
         dec_sum += snafu_to_decimal(snafu_numbers[-1])
 
-    print('Sun of snumbers: ', dec_sum)
+    print('Sum of numbers: ', dec_sum)
     snafu_sum = decimal_to_snafu(dec_sum)
     #print(snafu_to_decimal(snafu_sum))
     print('Snafu sum: ', snafu_sum)
@@ -2479,7 +2489,7 @@ if __name__ == '__main__':
     advent7_1(False)
     end_time_7 = time.time()
     print("time elapsed: {:.2f}s".format(end_time_7 - end_time_6))
-    print('Advent 7')
+    print('Advent 8')
     advent8_1(99)
     end_time_8 = time.time()
     print("time elapsed: {:.2f}s".format(end_time_8 - end_time_7))
@@ -2488,7 +2498,7 @@ if __name__ == '__main__':
     advent9_2()
     end_time_9 = time.time()
     print("time elapsed: {:.2f}s".format(end_time_9 - end_time_8))
-    print('Advent 9')
+    print('Advent 10')
     advent10_1()
     end_time_10 = time.time()
     print("time elapsed: {:.2f}s".format(end_time_10 - end_time_9))
@@ -2552,11 +2562,11 @@ if __name__ == '__main__':
     end_time_23 = time.time()
     print("time elapsed: {:.2f}s".format(end_time_23 - end_time_22))
     print('Advent 24')
-    advent24_I()
+    advent24_1()
     end_time_24 = time.time()
     print("time elapsed: {:.2f}s".format(end_time_24 - end_time_23))
     print('Advent 25')
-    advent25_I()
+    advent25_1()
     end_time_25 = time.time()
     print("time elapsed: {:.2f}s".format(end_time_25 - end_time_24))
 
